@@ -1,0 +1,93 @@
+import React, { useState, useEffect } from "react";
+
+function ProfileCard({ profile }) {
+  const [interested, setInterested] = useState(false);
+  const [applied, setApplied] = useState(() => {
+    const saved = localStorage.getItem(`applied-${profile.id}`);
+    return saved === "true";
+  });
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    const savedState = localStorage.getItem(`interested-${profile.id}`);
+    if (savedState) {
+      setInterested(JSON.parse(savedState));
+    }
+  }, [profile.id]);
+
+  const handleInterestedClick = () => {
+    const newState = !interested;
+    setInterested(newState);
+    localStorage.setItem(`interested-${profile.id}`, JSON.stringify(newState));
+  };
+
+  const handleApply = () => {
+    const currentUserId = localStorage.getItem("currentUser");
+    if (!currentUserId) {
+      alert("No current user found. Please create a nanny profile first.");
+      return;
+    }
+
+    setApplied(true);
+    localStorage.setItem(`applied-${profile.id}`, "true");
+    localStorage.setItem(`application-${profile.id}`, currentUserId);
+  };
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  return (
+    <div className="card">
+      <img
+        src={profile.image || "https://via.placeholder.com/150"}
+        alt={profile.name}
+        className="profile-photo"
+      />
+      <h2>{profile.name}</h2>
+      <p><strong>Role:</strong> {profile.role}</p>
+      <p><strong>Location:</strong> {profile.location}</p>
+      <p><strong>Experience:</strong> {profile.experience} years</p>
+      <p><strong>Rate:</strong> {profile.rate}</p>
+      <p><strong>Availability:</strong> {profile.availability}</p>
+
+      <button
+        className={interested ? "interested-btn active" : "interested-btn"}
+        onClick={handleInterestedClick}
+      >
+        {interested ? "Marked as Interested ✅" : "Interested"}
+      </button>
+
+      {profile.role === "Family" && (
+        <button
+          className={`apply-btn ${applied ? "applied" : ""}`}
+          onClick={handleApply}
+          disabled={applied}
+        >
+          {applied ? "Applied" : "Apply Now"}
+        </button>
+      )}
+      {profile.role === "Family" && applied && (
+        <button
+          onClick={() => window.location.href = `/messages/${profile.id}`}
+          className="expand-btn"
+        >
+          Message
+        </button>
+    )}
+
+
+      <button className="expand-btn" onClick={handleExpandClick}>
+        {expanded ? "Hide Details" : "Show Details"}
+      </button>
+
+      {expanded && (
+        <div className="additional-details">
+          <p><strong>Bio:</strong> {profile.bio}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default ProfileCard;
