@@ -145,11 +145,10 @@ function CreateProfile() {
           <input name="image" value={formData.image} onChange={handleChange} />
         </label>
 
-        <button type="button" onClick={handlePreview}>
-          Preview Profile
-        </button>
-
-        <button type="submit">Save Profile</button>
+       <div className="button-row">
+        <button type="button" onClick={handlePreview}>Preview</button>
+        <button type="submit">Save</button>
+       </div>
       </form>
 
       {previewProfile && (

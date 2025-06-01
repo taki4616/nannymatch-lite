@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 import profiles from "../data/profiles";
 import ProfileCard from "./ProfileCard";
-import FilterBar from "./FilterBar";
 
 function ProfileList() {
   const [selectedRole, setSelectedRole] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedAvailability, setSelectedAvailability] = useState("");
   const [allProfiles, setAllProfiles] = useState([]);
-
 
   useEffect(() => {
     const userProfiles = JSON.parse(localStorage.getItem("userProfiles") || "[]");
@@ -23,24 +21,55 @@ function ProfileList() {
     return roleMatch && locationMatch && availabilityMatch;
   });
 
-    const familyProfiles = filteredProfiles.filter((p) => p.role === "Family");
+  const familyProfiles = filteredProfiles.filter((p) => p.role === "Family");
 
+  const handleClearFilters = () => {
+    setSelectedRole("");
+    setSelectedLocation("");
+    setSelectedAvailability("");
+  };
 
   return (
     <>
-      <FilterBar
-        selectedRole={selectedRole}
-        selectedLocation={selectedLocation}
-        selectedAvailability={selectedAvailability}
-        onRoleChange={setSelectedRole}
-        onLocationChange={setSelectedLocation}
-        onAvailabilityChange={setSelectedAvailability}
-      />
+      <div className="filter-bar">
+        <label>
+          Role
+          <select value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
+            <option value="">All</option>
+            <option value="Nanny">Nanny</option>
+            <option value="Family">Family</option>
+          </select>
+        </label>
+
+        <label>
+          Location
+          <select value={selectedLocation} onChange={(e) => setSelectedLocation(e.target.value)}>
+            <option value="">All</option>
+            <option value="Brooklyn, NY">Brooklyn, NY</option>
+            <option value="Harlem, NY">Harlem, NY</option>
+            {/* Add more dynamically later if needed */}
+          </select>
+        </label>
+
+        <label>
+          Availability
+          <select value={selectedAvailability} onChange={(e) => setSelectedAvailability(e.target.value)}>
+            <option value="">All</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+          </select>
+        </label>
+
+        <button className="clear-btn" onClick={handleClearFilters}>
+          Clear Filters
+        </button>
+      </div>
+
       {selectedRole !== "Nanny" && familyProfiles.length === 0 && (
-  <p style={{ textAlign: "center", marginBottom: "20px" }}>
-    No family profiles available to apply to. Try creating one!
-  </p>
-)}
+        <p style={{ textAlign: "center", marginBottom: "20px" }}>
+          No family profiles available to apply to. Try creating one!
+        </p>
+      )}
 
       <div className="card-grid">
         {filteredProfiles.map((profile) => (
