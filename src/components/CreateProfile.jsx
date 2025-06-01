@@ -141,8 +141,13 @@ function CreateProfile() {
         </label>
 
         <label>
-          Image URL:
-          <input name="image" value={formData.image} onChange={handleChange} />
+          Profile Photo URL (optional):
+          <input
+            name="image"
+            value={formData.image}
+            onChange={handleChange}
+            placeholder="https://example.com/photo.jpg"
+          />
         </label>
 
        <div className="button-row">
