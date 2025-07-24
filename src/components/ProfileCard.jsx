@@ -39,7 +39,6 @@ function ProfileCard({ profile }) {
   };
 
   const DEFAULT_IMAGE = "https://via.placeholder.com/150";
-  const profileImage = profile.image || DEFAULT_IMAGE;
   const [imageError, setImageError] = useState(false);
 
 
