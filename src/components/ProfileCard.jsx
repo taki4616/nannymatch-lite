@@ -41,12 +41,15 @@ function ProfileCard({ profile }) {
   const DEFAULT_IMAGE = "https://via.placeholder.com/150";
   const [imageError, setImageError] = useState(false);
 
+  const imageSrc = !imageError
+    ? profile.image || DEFAULT_IMAGE
+    : null;
 
   return (
     <div className="card">
-      {!imageError ? (
+      {imageSrc ? (
         <img
-          src={profile.image}
+          src={imageSrc}
           alt={profile.name}
           className="profile-photo"
           onError={() => setImageError(true)}
@@ -54,6 +57,7 @@ function ProfileCard({ profile }) {
       ) : (
         <div className="profile-photo fallback-photo">No Image</div>
       )}
+
       <h2>{profile.name}</h2>
       <p><strong>Role:</strong> {profile.role}</p>
       <p><strong>Location:</strong> {profile.location}</p>
