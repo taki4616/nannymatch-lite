@@ -100,3 +100,8 @@ Built With Love by Nataki Skinner
 
 Let me know if you want this exported as a `.md` file or if you'd like to include badges, screenshots, or a demo GIF later.
 ```
+
+## 🔗 Live Demo
+
+🚀 [Check out NannyMatch Lite on Netlify](https://nannymatch-lite.netlify.app)
+
